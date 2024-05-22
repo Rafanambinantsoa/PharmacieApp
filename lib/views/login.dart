@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:MyPharmacie/controllers/UserController.dart';
 import 'package:MyPharmacie/model/loginRes.dart';
+import 'package:MyPharmacie/views/Registration.dart';
 import 'package:MyPharmacie/views/profile.dart';
 import 'package:MyPharmacie/views/tabv1.dart';
 import 'package:flutter/material.dart';
@@ -194,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     children: [
                       const Text(
-                        'Don’t have an account?',
+                        'Pas Encore de compte ?',
                         style: TextStyle(
                           color: Color(0xFF837E93),
                           fontSize: 13,
@@ -207,10 +208,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          handleLogin();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegistrationScreen()),
+                              (route) => false);
                         },
                         child: const Text(
-                          'Se connecter',
+                          'Creer un compte',
                           style: TextStyle(
                             color: Color(0xFF755DC1),
                             fontSize: 13,
@@ -223,15 +228,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(
                     height: 15,
-                  ),
-                  const Text(
-                    'Forget Password?',
-                    style: TextStyle(
-                      color: Color(0xFF755DC1),
-                      fontSize: 13,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
                   ),
                 ],
               ),

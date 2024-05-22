@@ -1,12 +1,61 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String baseUrl = 'http://192.168.43.220:8000/api';
 var client = http.Client();
 
 class Usercontroller {
+  Future<dynamic> register(String firstname, String lastname, String phone,
+      String email, String pass, File? image) async {
+    var url = Uri.parse('$baseUrl/registration');
+    // Création de la requête multipart
+    var request = http.MultipartRequest('POST', url);
+
+    // Ajout des champs de texte
+    request.fields['firstname'] = firstname;
+    request.fields['lastname'] = lastname;
+    request.fields['phone'] = phone;
+    request.fields['email'] = email;
+    request.fields['password'] = pass;
+
+    if (image != null) {
+      // Déterminer le type MIME de l'image
+      final mimeTypeData =
+          lookupMimeType(image.path, headerBytes: [0xFF, 0xD8])?.split('/');
+
+      // Ajouter le fichier image à la requête
+      request.files.add(await http.MultipartFile.fromPath(
+        'image',
+        image.path,
+        contentType: mimeTypeData != null && mimeTypeData.length == 2
+            ? MediaType(mimeTypeData[0], mimeTypeData[1])
+            : null,
+      ));
+    }
+
+    // Envoi de la requête
+    try {
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        return response.body; // ou autre traitement de réponse réussi
+      } else {
+        return response.body; // ou autre traitement de réponse réussi
+      }
+    } catch (e) {
+      return {
+        'error': true,
+        'message': 'Une erreur est survenue. Veuillez réessayer plus tard.'
+      };
+    }
+  }
+
 //Login
   Future<dynamic> login(String api, String email, String pass) async {
     var url = Uri.parse(baseUrl + api);

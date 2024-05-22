@@ -1,3 +1,4 @@
+import 'package:MyPharmacie/views/Registration.dart';
 import 'package:MyPharmacie/views/login.dart';
 import 'package:MyPharmacie/views/profile.dart';
 import 'package:MyPharmacie/views/tab_bar.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: RegistrationScreen(),
     );
   }
 }
