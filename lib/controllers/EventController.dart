@@ -52,7 +52,7 @@ class EventController extends GetxController {
     try {
       String token = await getToken();
       isLoading.value = true;
-      var response = await http.get(Uri.parse(baseUrl + '/mobile/events'),
+      var response = await http.get(Uri.parse('$baseUrl/mobile/events'),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token'
