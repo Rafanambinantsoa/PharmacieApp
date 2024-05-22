@@ -24,24 +24,33 @@ class _LoginScreenState extends State<LoginScreen> {
           .login('/mobile/login', _emailController.text, _passController.text)
           .catchError((err) {});
 
-      if (response == null) return;
-      var caster = LoginRes.fromJson(jsonDecode(response));
-      if (caster.message == "success") {
-        //Save the token in the shared preferences
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        await pref.setString('token', caster.token!);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const NavigationRailPage()),
-            (route) => false);
-      } else {
-        //Show a snackbar notification
+      if (response == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${caster.message}'),
+          const SnackBar(
+            content: Text('Verifie ta connexion Internet'),
           ),
         );
+      } else {
+        var caster = LoginRes.fromJson(jsonDecode(response));
+        if (caster.message == "success") {
+          //Save the token in the shared preferences
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          await pref.setString('token', caster.token!);
+          await pref.setString('email', _emailController.text);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const NavigationRailPage()),
+              (route) => false);
+        } else {
+          //Show a snackbar notification
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${caster.message}'),
+            ),
+          );
+        }
+        debugPrint(caster.token);
       }
-      debugPrint(caster.token);
       // setState(() {
       //   firstname = caster.firstname!;
       //   lastname = caster.lastname!;

@@ -78,6 +78,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_inset_box_shadow:
+    dependency: transitive
+    description:
+      name: flutter_inset_box_shadow
+      sha256: "0b1930ed5f4ad84b11b41dda907fbc5d4c12929a4c51455c626e5937b47ffb93"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -224,6 +232,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  pretty_animated_buttons:
+    dependency: "direct main"
+    description:
+      name: pretty_animated_buttons
+      sha256: e78b7d4128710dde2c1c6ef0ab223ea616f15ec4a2396203a59e6cf8cc355662
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   pretty_qr_code:
     dependency: "direct main"
     description:

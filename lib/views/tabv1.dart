@@ -1,7 +1,26 @@
 import 'package:MyPharmacie/views/Navigations/all_events.dart';
 import 'package:MyPharmacie/views/Navigations/myProfile.dart';
 import 'package:MyPharmacie/views/Navigations/qr_code.dart';
+import 'package:MyPharmacie/views/Navigations/reservations.dart';
 import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+      ),
+      home: const NavigationRailPage(),
+    );
+  }
+}
 
 class NavigationRailPage extends StatefulWidget {
   const NavigationRailPage({Key? key}) : super(key: key);
@@ -26,6 +45,11 @@ const _navBarItems = [
     activeIcon: Icon(Icons.qr_code_2_rounded),
     label: 'QR Code',
   ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.check_box_outlined),
+    activeIcon: Icon(Icons.check_box_rounded),
+    label: 'Mes Reservations',
+  ),
 ];
 
 class _NavigationRailPageState extends State<NavigationRailPage> {
@@ -40,13 +64,20 @@ class _NavigationRailPageState extends State<NavigationRailPage> {
     return Scaffold(
       bottomNavigationBar: isSmallScreen
           ? BottomNavigationBar(
+              backgroundColor: Colors
+                  .white, // Assurez-vous que la couleur de fond est définie
+              selectedItemColor: const Color.fromARGB(
+                  255, 112, 118, 124), // Couleur des items sélectionnés
+              unselectedItemColor:
+                  Colors.grey, // Couleur des items non sélectionnés
               items: _navBarItems,
               currentIndex: _selectedIndex,
               onTap: (int index) {
                 setState(() {
                   _selectedIndex = index;
                 });
-              })
+              },
+            )
           : null,
       body: Row(
         children: <Widget>[
@@ -61,15 +92,13 @@ class _NavigationRailPageState extends State<NavigationRailPage> {
               extended: isLargeScreen,
               destinations: _navBarItems
                   .map((item) => NavigationRailDestination(
-                      icon: item.icon,
-                      selectedIcon: item.activeIcon,
-                      label: Text(
-                        item.label!,
-                      )))
+                        icon: item.icon,
+                        selectedIcon: item.activeIcon,
+                        label: Text(item.label!),
+                      ))
                   .toList(),
             ),
           const VerticalDivider(thickness: 1, width: 1),
-          // This is the main content.
           Expanded(
             child: IndexedStack(
               index: _selectedIndex,
@@ -77,9 +106,10 @@ class _NavigationRailPageState extends State<NavigationRailPage> {
                 Myprofile(),
                 AllEvents(),
                 MyQrCode(),
+                MesReservations(),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

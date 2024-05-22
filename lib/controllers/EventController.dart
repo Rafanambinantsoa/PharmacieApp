@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:MyPharmacie/controllers/UserController.dart';
 import 'package:MyPharmacie/model/event.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +19,35 @@ class EventController extends GetxController {
     return pref.getString('token') ?? '';
   }
 
+  //get userEmail
+  Future<String> getUserEmail() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString('email') ?? '';
+  }
+
+  Future reservation(String eventId) async {
+    var url = Uri.parse("$baseUrl/reservation/add/$eventId");
+    var _headers = {
+      'Content-Type': 'application/json',
+    };
+
+    String email = await getUserEmail();
+    var response = await client.post(url,
+        headers: _headers,
+        body: jsonEncode({
+          'email': email,
+        }));
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+    if (response.statusCode == 403) {
+      return response.body;
+    } else {
+      //throw exception and catch it in UI
+    }
+  }
+
+//get events
   Future getEvents() async {
     try {
       String token = await getToken();
@@ -29,7 +59,6 @@ class EventController extends GetxController {
           });
 
       if (response.statusCode == 200) {
-        print("HEY HEY");
         //clear the list before adding new items
         events.value.clear();
         isLoading.value = false;
@@ -38,7 +67,7 @@ class EventController extends GetxController {
         for (var items in content) {
           events.value.add(Events.fromJson(items));
         }
-        print(content);
+        // print(content);
       }
     } catch (e) {
       print(e.toString());

@@ -1,0 +1,3 @@
+- Reservation asivo contrainte genre refa  1 jours avant de  tsy afaka manao Reservation tsouny
+- Registration (upload photo hono ehh)
+- Annuler Reservation ( contrainte genre refa 1 jours avant de tsy afaka manao annuler annulation tsouny)

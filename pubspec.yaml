@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.2.3
   pretty_qr_code: ^3.3.0
   get: ^4.6.6
+  pretty_animated_buttons: ^0.0.1
 
 dev_dependencies:
   flutter_test:

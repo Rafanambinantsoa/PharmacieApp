@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:MyPharmacie/controllers/EventController.dart';
+import 'package:MyPharmacie/model/reservationRes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -12,6 +15,7 @@ class AllEvents extends StatefulWidget {
 
 class _AllEventsState extends State<AllEvents> {
   final EventController _controller = Get.put(EventController());
+  bool _isLoadingRes = false;
 
   @override
   void initState() {
@@ -19,6 +23,27 @@ class _AllEventsState extends State<AllEvents> {
       _controller.getEvents();
     });
     super.initState();
+  }
+
+  void _reservation(String eventId) async {
+    setState(() {
+      _isLoadingRes = true;
+    });
+    var res = await _controller.reservation(eventId);
+    if (res == null) {
+      print("NULLE");
+    } else {
+      var caster = ReservationRes.fromJson(jsonDecode(res));
+      setState(() {
+        _isLoadingRes = false;
+      });
+      //Show a snackbar notification
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(caster.message),
+        ),
+      );
+    }
   }
 
   @override
@@ -48,45 +73,55 @@ class _AllEventsState extends State<AllEvents> {
                           child: Row(
                             children: [
                               Expanded(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _controller.events.value[index].titre,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                      "${_controller.events.value[index].lieu} - ${_controller.events.value[index].heure.toString()} - ${_controller.events.value[index].date.toString()}",
-                                      style: TextStyle(color: Colors.black54)),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                      _controller
-                                          .events.value[index].description,
-                                      style: TextStyle(color: Colors.black54)),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icons.bookmark_border_rounded,
-                                      Icons.share,
-                                      Icons.more_vert
-                                    ].map((e) {
-                                      return InkWell(
-                                        onTap: () {},
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Icon(e, size: 16),
+                                  child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _controller.events.value[index].titre,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        "${_controller.events.value[index].lieu} - ${_controller.events.value[index].heure.toString()} - ${_controller.events.value[index].date.toString()}",
+                                        style: const TextStyle(
+                                            color: Colors.black54)),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        _controller
+                                            .events.value[index].description,
+                                        style: const TextStyle(
+                                            color: Colors.black54)),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        //Button with icons reservation
+                                        ElevatedButton.icon(
+                                          onPressed: () {
+                                            _reservation(_controller
+                                                .events.value[index].id
+                                                .toString());
+                                          },
+                                          icon: _isLoadingRes
+                                              ? const SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                      CircularProgressIndicator())
+                                              : const Icon(Icons.add),
+                                          label: _isLoadingRes
+                                              ? const Text("En cours...")
+                                              : const Text("Réserver"),
                                         ),
-                                      );
-                                    }).toList(),
-                                  )
-                                ],
+                                      ],
+                                    )
+                                  ],
+                                ),
                               )),
                             ],
                           ),
