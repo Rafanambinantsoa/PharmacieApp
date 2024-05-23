@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:MyPharmacie/controllers/ReservationController.dart';
+import 'package:MyPharmacie/model/reservationRes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -21,6 +24,35 @@ class _MesReservationsState extends State<MesReservations> {
       _controller.getMyRes();
     });
     super.initState();
+  }
+
+  Future getCanceledRes(String eventId) async {
+    setState(() {
+      _isLoadingRes = true;
+    });
+    var res = await _controller.cancelRes(eventId);
+    if (res != null) {
+      var caster = ReservationRes.fromJson(jsonDecode(res));
+      if (caster.message == "success") {
+        //actuliser la liste des reservations
+        _controller.getMyRes();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Reservation annulée"),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(caster.message),
+          ),
+        );
+      }
+    }
+    setState(() {
+      _isLoadingRes = false;
+    });
   }
 
   @override
@@ -81,10 +113,10 @@ class _MesReservationsState extends State<MesReservations> {
                                         children: [
                                           //Button with icons reservation
                                           ElevatedButton.icon(
-                                            onPressed: () async {
-                                              //refresh the list after canceling the reservation
-                                              _controller.getMyRes();
-                                            },
+                                            onPressed: () => getCanceledRes(
+                                                _controller.listRes.value[index]
+                                                    .eventId
+                                                    .toString()),
                                             icon: _isLoadingRes
                                                 ? const SizedBox(
                                                     height: 20,

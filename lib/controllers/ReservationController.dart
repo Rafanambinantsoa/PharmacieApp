@@ -37,6 +37,28 @@ class ReservationController extends GetxController {
     }
   }
 
+  //annuler ma reservation
+  Future<dynamic> cancelRes(String eventId) async {
+    String userId = await getUserId();
+    String token = await getToken();
+    var url = Uri.parse("$baseUrl/mobile/events/$eventId/annuler/$userId");
+    var _headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var response = await client.delete(url,
+        headers: _headers); //send request to the server
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+    if (response.statusCode == 403) {
+      return response.body;
+    } else {
+      return response.body;
+    }
+  }
+
   Future getMyRes() async {
     try {
       String id = await getUserId();
