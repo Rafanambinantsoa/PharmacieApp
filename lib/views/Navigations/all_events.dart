@@ -16,6 +16,7 @@ class AllEvents extends StatefulWidget {
 class _AllEventsState extends State<AllEvents> {
   final EventController _controller = Get.put(EventController());
   bool _isLoadingRes = false;
+  String _searchText = "";
 
   @override
   void initState() {
@@ -49,11 +50,27 @@ class _AllEventsState extends State<AllEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const SearchBar()),
+      appBar: AppBar(title: SearchBar(onSearch: (text) {
+        setState(() {
+          _searchText = text;
+        });
+      })),
       body: Center(
         child: Container(
             constraints: const BoxConstraints(maxWidth: 400),
             child: Obx(() {
+              var filteredEvents = _controller.events.value.where((event) {
+                return event.titre
+                        .toLowerCase()
+                        .contains(_searchText.toLowerCase()) ||
+                    event.lieu
+                        .toLowerCase()
+                        .contains(_searchText.toLowerCase()) ||
+                    event.description
+                        .toLowerCase()
+                        .contains(_searchText.toLowerCase());
+              }).toList();
+
               return _controller.isLoading.value
                   ? const Center(
                       child: CircularProgressIndicator(),
@@ -63,7 +80,7 @@ class _AllEventsState extends State<AllEvents> {
                         _controller.getEvents();
                       },
                       child: ListView.builder(
-                        itemCount: _controller.events.value.length,
+                        itemCount: filteredEvents.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                             height: 136,
@@ -84,7 +101,7 @@ class _AllEventsState extends State<AllEvents> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _controller.events.value[index].titre,
+                                        filteredEvents[index].titre,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                         maxLines: 2,
@@ -92,13 +109,11 @@ class _AllEventsState extends State<AllEvents> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                          "${_controller.events.value[index].lieu} - ${_controller.events.value[index].heure.toString()} - ${_controller.events.value[index].date.toString()}",
+                                          "${filteredEvents[index].lieu} - ${filteredEvents[index].heure.toString()} - ${filteredEvents[index].date.toString()}",
                                           style: const TextStyle(
                                               color: Colors.black54)),
                                       const SizedBox(height: 8),
-                                      Text(
-                                          _controller
-                                              .events.value[index].description,
+                                      Text(filteredEvents[index].description,
                                           style: const TextStyle(
                                               color: Colors.black54)),
                                       const SizedBox(height: 8),
@@ -108,8 +123,8 @@ class _AllEventsState extends State<AllEvents> {
                                           //Button with icons reservation
                                           ElevatedButton.icon(
                                             onPressed: () {
-                                              _reservation(_controller
-                                                  .events.value[index].id
+                                              _reservation(filteredEvents[index]
+                                                  .id
                                                   .toString());
                                             },
                                             icon: _isLoadingRes
@@ -141,7 +156,8 @@ class _AllEventsState extends State<AllEvents> {
 }
 
 class SearchBar extends StatefulWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  final Function(String) onSearch;
+  const SearchBar({Key? key, required this.onSearch}) : super(key: key);
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -150,6 +166,7 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar>
     with SingleTickerProviderStateMixin {
   bool _isActive = false;
+  TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +188,7 @@ class _SearchBarState extends State<SearchBar>
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4.0)),
                       child: TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
                             hintText: 'Rechercher un événement',
                             prefixIcon: const Icon(Icons.search),
@@ -178,9 +196,12 @@ class _SearchBarState extends State<SearchBar>
                                 onPressed: () {
                                   setState(() {
                                     _isActive = false;
+                                    _searchController.clear();
+                                    widget.onSearch("");
                                   });
                                 },
                                 icon: const Icon(Icons.close))),
+                        onChanged: widget.onSearch,
                       ),
                     )
                   : IconButton(

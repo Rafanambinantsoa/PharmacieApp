@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String baseUrl = 'http://192.168.43.220:8000/api';
 
 class EventController extends GetxController {
+  Rx<List<Events>> filteredEvents = Rx<List<Events>>([]);
   Rx<List<Events>> events = Rx<List<Events>>([]);
 
   final isLoading = true.obs;
@@ -66,7 +67,9 @@ class EventController extends GetxController {
 
         for (var items in content) {
           events.value.add(Events.fromJson(items));
+          filteredEvents.value.add(Events.fromJson(items));
         }
+
         // print(content);
       }
     } catch (e) {
