@@ -3,13 +3,10 @@ import 'dart:io';
 
 import 'package:MyPharmacie/controllers/UserController.dart';
 import 'package:MyPharmacie/model/components/CustomTextField.dart';
-import 'package:MyPharmacie/model/loginRes.dart';
 import 'package:MyPharmacie/model/registrationRes.dart';
 import 'package:MyPharmacie/views/login.dart';
-import 'package:MyPharmacie/views/tabv1.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

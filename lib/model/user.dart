@@ -16,6 +16,7 @@ class User {
   String phone;
   dynamic emailVerifiedAt;
   String role;
+  String? image;
   String badgeToken;
   dynamic passwordResetToken;
 
@@ -27,8 +28,9 @@ class User {
     required this.phone,
     required this.emailVerifiedAt,
     required this.role,
+    required this.image,
     required this.badgeToken,
-    required this.passwordResetToken,
+    this.passwordResetToken,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -39,6 +41,7 @@ class User {
         phone: json["phone"],
         emailVerifiedAt: json["email_verified_at"],
         role: json["role"],
+        image: json["image"],
         badgeToken: json["badgeToken"],
         passwordResetToken: json["password_reset_token"],
       );
@@ -51,6 +54,7 @@ class User {
         "phone": phone,
         "email_verified_at": emailVerifiedAt,
         "role": role,
+        "image": image,
         "badgeToken": badgeToken,
         "password_reset_token": passwordResetToken,
       };
