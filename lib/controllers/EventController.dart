@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:MyPharmacie/controllers/UserController.dart';
+import 'package:MyPharmacie/model/components/constant.dart';
 import 'package:MyPharmacie/model/event.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-const String baseUrl = 'http://192.168.43.220:8000/api';
 
 class EventController extends GetxController {
   Rx<List<Events>> filteredEvents = Rx<List<Events>>([]);
