@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Log In',
+                    'Se connecter',
                     style: TextStyle(
                       color: Color(0xFF755DC1),
                       fontSize: 27,
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.w400,
                     ),
                     decoration: const InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Mot de passe',
                       labelStyle: TextStyle(
                         color: Color(0xFF755DC1),
                         fontSize: 15,
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: const Color(0xFF9F7BFF),
                         ),
                         child: const Text(
-                          'Sign In',
+                          'Connexion',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,

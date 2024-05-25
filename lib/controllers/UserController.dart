@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 var client = http.Client();
 
 class Usercontroller {
+//get points
+
   Future getUserId() async {
     var url = Uri.parse("$baseUrl/user");
     String token = await getToken();
@@ -25,6 +27,49 @@ class Usercontroller {
     if (response.statusCode == 200) {
       var content = json.decode(response.body);
       return content['id'].toString();
+    }
+  }
+
+  Future getBadgeToken() async {
+    var url = Uri.parse("$baseUrl/user");
+    String token = await getToken();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var response = await client.get(
+      url,
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      var content = json.decode(response.body);
+      return content['badgeToken'].toString();
+    }
+  }
+
+  //Get user details
+  Future<dynamic> getPoint() async {
+    var id = await getUserId();
+    var url = Uri.parse("$baseUrl/user/sumpoint/$id");
+    String token = await getToken();
+    var _headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    var response = await client.get(
+      url,
+      headers: _headers,
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+    if (response.statusCode == 403) {
+      return response.body;
+    } else {
+      return response.body;
+      //throw exception and catch it in UI
     }
   }
 
@@ -160,7 +205,7 @@ class Usercontroller {
     if (response.statusCode == 403) {
       return response.body;
     } else {
-      //throw exception and catch it in UI
+      return response.body;
     }
   }
 

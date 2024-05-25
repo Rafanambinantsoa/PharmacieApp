@@ -17,6 +17,7 @@ class _AllEventsState extends State<AllEvents> {
   final EventController _controller = Get.put(EventController());
   bool _isLoadingRes = false;
   String _searchText = "";
+  int iCheck = 0;
 
   @override
   void initState() {
@@ -26,7 +27,11 @@ class _AllEventsState extends State<AllEvents> {
     super.initState();
   }
 
-  void _reservation(String eventId) async {
+  void _reservation(String eventId, int indx) async {
+    setState(() {
+      iCheck = indx;
+    });
+    Future.delayed(Duration(seconds: 2), () {});
     setState(() {
       _isLoadingRes = true;
     });
@@ -80,10 +85,13 @@ class _AllEventsState extends State<AllEvents> {
                         _controller.getEvents();
                       },
                       child: ListView.builder(
+                        // physics: NeverScrollableScrollPhysics(),
                         itemCount: filteredEvents.length,
                         itemBuilder: (BuildContext context, int index) {
+                          var time = filteredEvents[index].date.toString();
+                          DateTime dateReserv = DateTime.parse(time);
                           return Container(
-                            height: 136,
+                            height: 141,
                             margin: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8.0),
                             decoration: BoxDecoration(
@@ -94,7 +102,6 @@ class _AllEventsState extends State<AllEvents> {
                             child: Row(
                               children: [
                                 Expanded(
-                                    child: SingleChildScrollView(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -109,7 +116,7 @@ class _AllEventsState extends State<AllEvents> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                          "${filteredEvents[index].lieu} - ${filteredEvents[index].heure.toString()} - ${filteredEvents[index].date.toString()}",
+                                          "${filteredEvents[index].lieu} - ${filteredEvents[index].heure.toString()} - ${dateReserv.day}/${dateReserv.month}/${dateReserv.year}",
                                           style: const TextStyle(
                                               color: Colors.black54)),
                                       const SizedBox(height: 8),
@@ -123,18 +130,22 @@ class _AllEventsState extends State<AllEvents> {
                                           //Button with icons reservation
                                           ElevatedButton.icon(
                                             onPressed: () {
-                                              _reservation(filteredEvents[index]
-                                                  .id
-                                                  .toString());
+                                              _reservation(
+                                                  filteredEvents[index]
+                                                      .id
+                                                      .toString(),
+                                                  index);
                                             },
-                                            icon: _isLoadingRes
+                                            icon: (_isLoadingRes &&
+                                                    iCheck == index)
                                                 ? const SizedBox(
                                                     height: 20,
                                                     width: 20,
                                                     child:
                                                         CircularProgressIndicator())
                                                 : const Icon(Icons.add),
-                                            label: _isLoadingRes
+                                            label: (_isLoadingRes &&
+                                                    iCheck == index)
                                                 ? const Text("En cours...")
                                                 : const Text("Réserver"),
                                           ),
@@ -142,7 +153,7 @@ class _AllEventsState extends State<AllEvents> {
                                       )
                                     ],
                                   ),
-                                )),
+                                ),
                               ],
                             ),
                           );
@@ -174,7 +185,7 @@ class _SearchBarState extends State<SearchBar>
       children: [
         if (!_isActive)
           Text("Tous les événements",
-              style: Theme.of(context).appBarTheme.titleTextStyle),
+              style: TextStyle(fontWeight: FontWeight.bold)),
         Expanded(
           child: Align(
             alignment: Alignment.centerRight,

@@ -4,6 +4,7 @@ import 'package:MyPharmacie/controllers/ReservationController.dart';
 import 'package:MyPharmacie/model/reservationRes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class MesReservations extends StatefulWidget {
@@ -17,6 +18,7 @@ class _MesReservationsState extends State<MesReservations> {
   final ReservationController _controller = Get.put(ReservationController());
 
   bool _isLoadingRes = false;
+  int iCheck = 0;
 
   @override
   void initState() {
@@ -26,7 +28,11 @@ class _MesReservationsState extends State<MesReservations> {
     super.initState();
   }
 
-  Future getCanceledRes(String eventId) async {
+  Future getCanceledRes(String eventId, int indx) async {
+    setState(() {
+      iCheck = indx;
+    });
+    Future.delayed(Duration(seconds: 2), () {});
     setState(() {
       _isLoadingRes = true;
     });
@@ -59,7 +65,10 @@ class _MesReservationsState extends State<MesReservations> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mes Reservations'),
+        title: const Text(
+          'Mes Reservations',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Container(
@@ -76,6 +85,9 @@ class _MesReservationsState extends State<MesReservations> {
                       child: ListView.builder(
                         itemCount: _controller.listRes.value.length,
                         itemBuilder: (BuildContext context, int index) {
+                          var time = _controller.listRes.value[index].eventDate
+                              .toString();
+                          DateTime dateReserv = DateTime.parse(time);
                           return Container(
                             height: 136,
                             margin: const EdgeInsets.symmetric(
@@ -104,7 +116,8 @@ class _MesReservationsState extends State<MesReservations> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                          "${_controller.listRes.value[index].eventDate.toString()} ",
+                                          // "le ${dateReserv.day}/${dateReserv.month}/${dateReserv.year} a ${dateReserv.hour}:${dateReserv.minute}",
+                                          "Date : ${dateReserv.day}/${dateReserv.month}/${dateReserv.year}",
                                           style: const TextStyle(
                                               color: Colors.black54)),
                                       const SizedBox(height: 8),
@@ -116,8 +129,10 @@ class _MesReservationsState extends State<MesReservations> {
                                             onPressed: () => getCanceledRes(
                                                 _controller.listRes.value[index]
                                                     .eventId
-                                                    .toString()),
-                                            icon: _isLoadingRes
+                                                    .toString(),
+                                                index),
+                                            icon: (_isLoadingRes &&
+                                                    iCheck == index)
                                                 ? const SizedBox(
                                                     height: 20,
                                                     width: 20,
@@ -125,7 +140,8 @@ class _MesReservationsState extends State<MesReservations> {
                                                         CircularProgressIndicator())
                                                 : const Icon(
                                                     Icons.cancel_presentation),
-                                            label: _isLoadingRes
+                                            label: (_isLoadingRes &&
+                                                    iCheck == index)
                                                 ? const Text("En cours...")
                                                 : const Text(
                                                     "Annuler ma reservation"),

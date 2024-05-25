@@ -4,24 +4,6 @@ import 'package:MyPharmacie/views/Navigations/qr_code.dart';
 import 'package:MyPharmacie/views/Navigations/reservations.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
-      home: const NavigationRailPage(),
-    );
-  }
-}
-
 class NavigationRailPage extends StatefulWidget {
   const NavigationRailPage({Key? key}) : super(key: key);
 
@@ -38,12 +20,12 @@ const _navBarItems = [
   BottomNavigationBarItem(
     icon: Icon(Icons.calendar_month),
     activeIcon: Icon(Icons.calendar_today_outlined),
-    label: 'Events',
+    label: 'Evenement',
   ),
   BottomNavigationBarItem(
     icon: Icon(Icons.qr_code),
     activeIcon: Icon(Icons.qr_code_2_rounded),
-    label: 'QR Code',
+    label: 'Mon QR Code',
   ),
   BottomNavigationBarItem(
     icon: Icon(Icons.check_box_outlined),

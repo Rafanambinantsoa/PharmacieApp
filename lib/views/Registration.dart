@@ -106,7 +106,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Registration',
+                    "S'inscrire",
                     style: TextStyle(
                       color: Color(0xFF755DC1),
                       fontSize: 27,
@@ -121,17 +121,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     height: 20,
                   ),
                   CustomTextField(
-                      controller: _firstController, labelText: "First Name"),
+                      controller: _firstController, labelText: "Nom"),
                   const SizedBox(
                     height: 25,
                   ),
                   CustomTextField(
-                      controller: _lastController, labelText: "Last Name"),
+                      controller: _lastController, labelText: "Prenom"),
                   const SizedBox(
                     height: 25,
                   ),
                   CustomTextField(
-                      controller: _phoneController, labelText: "Phone"),
+                      controller: _phoneController, labelText: "Telephone"),
                   const SizedBox(
                     height: 25,
                   ),
@@ -141,7 +141,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     height: 25,
                   ),
                   CustomTextField(
-                      controller: _passController, labelText: "Password"),
+                      controller: _passController, labelText: "Mot de passe"),
                   const SizedBox(
                     height: 25,
                   ),
@@ -159,6 +159,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: SizedBox(
@@ -172,7 +175,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           backgroundColor: const Color(0xFF9F7BFF),
                         ),
                         child: const Text(
-                          'Sign In',
+                          'Inscription',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -183,51 +186,51 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        'Don’t have an account?',
-                        style: TextStyle(
-                          color: Color(0xFF837E93),
-                          fontSize: 13,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 2.5,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          handleRegistration();
-                        },
-                        child: const Text(
-                          'Se connecter',
-                          style: TextStyle(
-                            color: Color(0xFF755DC1),
-                            fontSize: 13,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text(
-                    'Forget Password?',
-                    style: TextStyle(
-                      color: Color(0xFF755DC1),
-                      fontSize: 13,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  // const SizedBox(
+                  //   height: 15,
+                  // ),
+                  // Row(
+                  //   children: [
+                  //     const Text(
+                  //       'Don’t have an account?',
+                  //       style: TextStyle(
+                  //         color: Color(0xFF837E93),
+                  //         fontSize: 13,
+                  //         fontFamily: 'Poppins',
+                  //         fontWeight: FontWeight.w500,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 2.5,
+                  //     ),
+                  //     InkWell(
+                  //       onTap: () {
+                  //         handleRegistration();
+                  //       },
+                  //       child: const Text(
+                  //         'Se connecter',
+                  //         style: TextStyle(
+                  //           color: Color(0xFF755DC1),
+                  //           fontSize: 13,
+                  //           fontFamily: 'Poppins',
+                  //           fontWeight: FontWeight.w500,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(
+                  //   height: 15,
+                  // ),
+                  // const Text(
+                  //   'Forget Password?',
+                  //   style: TextStyle(
+                  //     color: Color(0xFF755DC1),
+                  //     fontSize: 13,
+                  //     fontFamily: 'Poppins',
+                  //     fontWeight: FontWeight.w500,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
